@@ -5,28 +5,27 @@ import fs from "fs";
 export async function downloadFromS3(fileKey: string) {
     try {
         AWS.config.update({
-            accessKeyId: process.env.S3_ACCESS_KEY_ID,
-            secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+            accessKeyId: process.env.NEXT_PUBLIC_S3_ACCESS_KEY_ID,
+            secretAccessKey: process.env.NEXT_PUBLIC_S3_SECRET_ACCESS_KEY,
         });
 
         const s3 = new AWS.S3({
             params: {
-                Bucket: process.env.S3_BUCKET_NAME,
+                Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME,
             },
-            region: process.env.S3_REGION,
+            region: process.env.NEXT_PUBLIC_S3_REGION,
         });
 
         const presignParams = {
-            Bucket: process.env.S3_BUCKET_NAME!,
+            Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME,
             Key: fileKey,
             Expires: 10,
-            ContentType: "application/pdf",
         }
 
         const presignedDownloadUrl = await s3.getSignedUrlPromise("getObject", presignParams);
 
         const config: AxiosRequestConfig = {
-            responseType: "blob",
+            responseType: "arraybuffer",
             onDownloadProgress: (event: AxiosProgressEvent) => {
                 console.log("Downloading from s3...", parseInt(((event.loaded * 100) / (event.total ?? 1)).toString()) + "%");
             }
