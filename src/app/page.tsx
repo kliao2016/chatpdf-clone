@@ -1,29 +1,18 @@
+import { unstable_noStore as noStore } from "next/cache";
 import FileUpload from "@/components/FileUpload";
 import SubscriptionButton from "@/components/SubscriptionButton";
 import { Button } from "@/components/ui/button";
-import { db } from "@/lib/db";
-import { chats, DrizzleChat } from "@/lib/db/schema";
 import { checkSubscription } from "@/lib/subscription";
 import { UserButton, auth } from "@clerk/nextjs";
-import { eq } from "drizzle-orm";
 import { ArrowRight, LogInIcon } from "lucide-react";
 import Link from "next/link";
 
 export default async function Home() {
-    const { userId } = await auth();
+    noStore();
+    const { userId }: { userId: string | null } = await auth();
     const isAuth: boolean = !!userId;
     const isPro: boolean = await checkSubscription();
-    let firstChat: DrizzleChat | null | undefined;
-    if (userId) {
-        const allChats = await db
-            .select()
-            .from(chats)
-            .where(eq(chats.userId, userId));
 
-        if (allChats) {
-            firstChat = allChats[0];
-        }
-    }
     return (
         <div className="w-screen min-h-screen bg-gradient-to-r from-indigo-300 to-purple-400">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -36,8 +25,8 @@ export default async function Home() {
                     </div>
 
                     <div className="flex mt-2">
-                        {isAuth && firstChat && (
-                            <Link href={`/chat/${firstChat.id}`}>
+                        {isAuth && (
+                            <Link href={`/chats/`}>
                                 <Button>
                                     Go to Chats
                                     <ArrowRight className="ml-2 w-5 h-5"></ArrowRight>

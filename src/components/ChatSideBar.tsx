@@ -1,18 +1,25 @@
+"use client";
 import { DrizzleChat } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
 import { MessageCircle, PlusCircle } from "lucide-react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import React, { useState } from "react";
 import SubscriptionButton from "./SubscriptionButton";
 import { Button } from "./ui/button";
 
 type Props = {
     chats: DrizzleChat[];
-    activeChatId: number;
     isPro: boolean;
 };
 
-const ChatSideBar = ({ chats, activeChatId, isPro }: Props) => {
+const ChatSideBar = ({ chats, isPro }: Props) => {
+    let activeChatId: number = 0;
+    const params = useParams();
+    if (params.chatId !== undefined && typeof params.chatId === "string") {
+        activeChatId = parseInt(params.chatId);
+    }
+
     return (
         <div className="w-full h-screen p-4 text-gray-200 bg-gray-900">
             <Link href="/">
@@ -24,7 +31,7 @@ const ChatSideBar = ({ chats, activeChatId, isPro }: Props) => {
 
             <div className="f flex-col gap-2 mt-4">
                 {chats.map((chat) => (
-                    <Link key={chat.id} href={`/chat/${chat.id}`}>
+                    <Link key={chat.id} href={`/chats/${chat.id}`}>
                         <div
                             className={cn(
                                 "rounded-lg p-3 text-slate-300 flex items-center",
