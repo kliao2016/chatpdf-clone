@@ -1,3 +1,4 @@
+import "server-only";
 import AWS from 'aws-sdk';
 import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 import fs from "fs";

@@ -1,3 +1,4 @@
+import "server-only";
 import { RecordValues } from "@pinecone-database/pinecone";
 import { Configuration, OpenAIApi } from "openai-edge";
 

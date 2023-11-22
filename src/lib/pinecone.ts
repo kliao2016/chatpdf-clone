@@ -1,3 +1,4 @@
+import "server-only";
 import { Vector } from '@pinecone-database/pinecone/dist/pinecone-generated-ts-fetch';
 import { Pinecone, PineconeRecord, RecordMetadata } from "@pinecone-database/pinecone";
 import { downloadFromS3 } from "./s3-server";

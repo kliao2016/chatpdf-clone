@@ -1,7 +1,5 @@
-"use client";
 import { DrizzleChat } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
-import axios from "axios";
 import { MessageCircle, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -15,20 +13,6 @@ type Props = {
 };
 
 const ChatSideBar = ({ chats, activeChatId, isPro }: Props) => {
-    const [loading, setLoading] = useState(false);
-
-    const handleSubscription = async () => {
-        try {
-            setLoading(true);
-            const response = await axios.get("/api/stripe");
-            window.location.href = response.data.url;
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     return (
         <div className="w-full h-screen p-4 text-gray-200 bg-gray-900">
             <Link href="/">

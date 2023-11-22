@@ -1,3 +1,4 @@
+import "server-only";
 import { Pinecone, RecordValues } from "@pinecone-database/pinecone";
 import { getEmbeddings } from "./embeddings";
 import { convertToAscii } from "./utils";
