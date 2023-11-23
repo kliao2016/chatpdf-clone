@@ -96,7 +96,6 @@ export async function downloadFromS3(fileKey: string): Promise<string | null> {
     }
 }
 
-
 export function getS3Url(fileKey: string): string {
     const url = `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.S3_REGION}.amazonaws.com/${fileKey}`;
     return url;
