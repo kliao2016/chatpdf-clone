@@ -1,9 +1,10 @@
-"use client";
 import ChatComponent from "@/components/ChatComponent";
-import { ChatsContext } from "@/components/contexts/ChatContextProvider";
 import PDFViewer from "@/components/PDFViewer";
+import getAllChats from "@/lib/db-queries";
 import { DrizzleChat } from "@/lib/db/schema";
-import React, { useContext } from "react";
+import { auth } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
+import React, { Suspense } from "react";
 
 type Props = {
     params: {
@@ -11,16 +12,23 @@ type Props = {
     };
 };
 
-const ChatPage = ({ params: { chatId } }: Props) => {
+const ChatPage = async ({ params: { chatId } }: Props) => {
+    const { userId }: { userId: string | null } = auth();
+    if (!userId) {
+        return redirect("/sign-in");
+    }
+
     const intChatId = parseInt(chatId);
-    const allChats: DrizzleChat[] = useContext<DrizzleChat[]>(ChatsContext);
+    const allChats: DrizzleChat[] = await getAllChats(userId);
     const currentChat = allChats.find((chat) => chat.id === intChatId);
 
     return (
         <>
             {/* PDF Viewer */}
             <div className="max-h-screen p-4 overflow-scroll flex-[5]">
-                <PDFViewer pdfUrl={currentChat?.pdfUrl ?? ""} />
+                <Suspense fallback={<div>Loading...</div>}>
+                    <PDFViewer fileKey={currentChat?.fileKey ?? ""} />
+                </Suspense>
             </div>
 
             {/* Chat Box */}

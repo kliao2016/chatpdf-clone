@@ -4,16 +4,16 @@ import { cn } from "@/lib/utils";
 import { MessageCircle, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import React, { useState } from "react";
-import SubscriptionButton from "./SubscriptionButton";
+import React, { Suspense } from "react";
 import { Button } from "./ui/button";
+import ButtonSkeleton from "./skeletons/ButtonSkeleton";
+import SubscriptionButtonSuspenseWrapper from "./SubscriptionButtonSuspenseWrapper";
 
 type Props = {
     chats: DrizzleChat[];
-    isPro: boolean;
 };
 
-const ChatSideBar = ({ chats, isPro }: Props) => {
+const ChatSideBar = ({ chats }: Props) => {
     let activeChatId: string = "0";
     const params = useParams();
     if (params.chatId !== undefined && typeof params.chatId === "string") {
@@ -56,7 +56,9 @@ const ChatSideBar = ({ chats, isPro }: Props) => {
                     <Link href="/">Source</Link>
                 </div>
 
-                <SubscriptionButton isPro={isPro} />
+                <Suspense fallback={<ButtonSkeleton />}>
+                    <SubscriptionButtonSuspenseWrapper />
+                </Suspense>
             </div>
         </div>
     );
