@@ -1,5 +1,5 @@
 "use client";
-import { uploadToS3 } from "@/lib/s3";
+import { uploadToS3Action } from "@/lib/s3";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Inbox, Loader2 } from "lucide-react";
@@ -44,7 +44,7 @@ function FileUpload() {
 
             try {
                 setUploading(true);
-                const data = await uploadToS3(file);
+                const data = await uploadToS3Action(file);
                 if (!data?.fileKey || !data?.fileName) {
                     toast("Error uploading vector embeddings to pinecone");
                     return;

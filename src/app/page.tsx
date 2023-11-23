@@ -9,7 +9,7 @@ import Link from "next/link";
 
 export default async function Home() {
     noStore();
-    const { userId }: { userId: string | null } = await auth();
+    const { userId }: { userId: string | null } = auth();
     const isAuth: boolean = !!userId;
     const isPro: boolean = await checkSubscription();
 
