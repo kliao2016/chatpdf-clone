@@ -25,7 +25,6 @@ export async function POST(req: Request, res: Response) {
             .values({
                 fileKey: fileKey,
                 pdfName: fileName,
-                pdfUrl: getS3Url(fileKey),
                 userId: userId,
             })
             .returning(
