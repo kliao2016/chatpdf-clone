@@ -14,7 +14,7 @@ type Props = {
 
 const ChatsLayout = async ({ children }: Props) => {
     noStore();
-    const { userId }: { userId: string | null } = await auth();
+    const { userId }: { userId: string | null } = auth();
     if (!userId) {
         return redirect("/sign-in");
     }
