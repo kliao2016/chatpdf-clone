@@ -1,7 +1,6 @@
 "use client";
-import { uploadToS3Action } from "@/lib/s3";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosProgressEvent } from "axios";
 import { Inbox, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -33,7 +32,12 @@ function FileUpload() {
         maxFiles: 1,
         onDrop: async (acceptedFiles) => {
             console.log(acceptedFiles);
-            const file = acceptedFiles[0];
+            if (acceptedFiles.length === 0) {
+                toast.error("Could not process file. Please try again.");
+                return;
+            }
+
+            const file: File = acceptedFiles[0];
             if (file.size > 10 * 1024 * 1024) {
                 // Larger than 10mb
                 toast(
@@ -44,20 +48,55 @@ function FileUpload() {
 
             try {
                 setUploading(true);
-                const data = await uploadToS3Action(file);
-                if (!data?.fileKey || !data?.fileName) {
-                    toast("Error uploading vector embeddings to pinecone");
+                const request = {
+                    params: {
+                        fileName: file.name,
+                    },
+                };
+                const signedUrlResponse = await axios.get(
+                    "/api/s3-signed-url",
+                    request,
+                );
+                const { signedUploadUrl, fileKey, fileName } =
+                    await signedUrlResponse.data;
+                if (!fileKey || !fileName || !signedUploadUrl) {
+                    toast("Error uploading file to S3");
                     return;
                 }
-                mutate(data, {
-                    onSuccess: ({ chatId }) => {
-                        toast.success("Chat Created!");
-                        router.push(`/chats/${chatId}`);
+
+                const config = {
+                    headers: {
+                        "Content-Type": file.type,
                     },
-                    onError: (error) => {
-                        toast.error("Error creating chat");
+                    onUploadProgress: (event: AxiosProgressEvent) => {
+                        console.log(
+                            "Uploading to s3...",
+                            parseInt(
+                                (
+                                    (event.loaded * 100) /
+                                    (event.total ?? 1)
+                                ).toString(),
+                            ) + "%",
+                        );
                     },
+                };
+
+                await axios.put(signedUploadUrl, file, config).then((_) => {
+                    console.log("Successfully uploaded to S3!", fileKey);
                 });
+
+                mutate(
+                    { fileKey, fileName },
+                    {
+                        onSuccess: ({ chatId }) => {
+                            toast.success("Chat Created!");
+                            router.push(`/chats/${chatId}`);
+                        },
+                        onError: (error) => {
+                            toast.error("Error creating chat");
+                        },
+                    },
+                );
             } catch (error) {
                 console.log(error);
             } finally {

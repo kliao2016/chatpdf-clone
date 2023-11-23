@@ -3,10 +3,7 @@ import AWS from 'aws-sdk';
 import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 import fs from "fs";
 
-export async function uploadToS3(file: File): Promise<{
-    fileKey: string;
-    fileName: string;
-}> {
+export async function getS3UploadPresignedUrl(fileName: string) {
     try {
         AWS.config.update({
             accessKeyId: process.env.S3_ACCESS_KEY_ID,
@@ -20,7 +17,7 @@ export async function uploadToS3(file: File): Promise<{
             region: process.env.S3_REGION,
         });
 
-        const fileKey = "uploads/" + Date.now().toString() + file.name.replace(" ", "-");
+        const fileKey: string = "uploads/" + Date.now().toString() + fileName.replace(" ", "-");
 
         const presignParams = {
             Bucket: process.env.S3_BUCKET_NAME,
@@ -29,26 +26,12 @@ export async function uploadToS3(file: File): Promise<{
             ContentType: "application/pdf",
         };
 
-        const presignedUploadUrl = await s3.getSignedUrlPromise("putObject", presignParams);
-
-        const config = {
-            headers: {
-                'Content-Type': file.type
-            },
-            onUploadProgress: (event: AxiosProgressEvent) => {
-                console.log("Uploading to s3...", parseInt(((event.loaded * 100) / (event.total ?? 1)).toString()) + "%");
-            }
-        };
-
-        await axios
-            .put(presignedUploadUrl, file, config)
-            .then((_) => {
-                console.log("Successfully uploaded to S3!", fileKey);
-            });
+        const presignedUploadUrl: string = await s3.getSignedUrlPromise("putObject", presignParams);
 
         return Promise.resolve({
-            fileKey,
-            fileName: file.name,
+            signedUploadUrl: presignedUploadUrl,
+            fileKey: fileKey,
+            fileName: fileName,
         });
     } catch (error) {
         console.error(error);

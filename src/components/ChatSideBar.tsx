@@ -14,10 +14,10 @@ type Props = {
 };
 
 const ChatSideBar = ({ chats, isPro }: Props) => {
-    let activeChatId: number = 0;
+    let activeChatId: string = "0";
     const params = useParams();
     if (params.chatId !== undefined && typeof params.chatId === "string") {
-        activeChatId = parseInt(params.chatId);
+        activeChatId = params.chatId;
     }
 
     return (
@@ -37,9 +37,9 @@ const ChatSideBar = ({ chats, isPro }: Props) => {
                                 "rounded-lg p-3 text-slate-300 flex items-center",
                                 {
                                     "bg-blue-600 text-white":
-                                        chat.id === activeChatId,
+                                        chat.id.toString() === activeChatId,
                                     "hover: text-white":
-                                        chat.id !== activeChatId,
+                                        chat.id.toString() !== activeChatId,
                                 },
                             )}
                         >
