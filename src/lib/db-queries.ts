@@ -1,3 +1,4 @@
+import "server-only";
 import { unstable_cache } from 'next/cache';
 import { chats } from './db/schema';
 import { eq } from 'drizzle-orm';

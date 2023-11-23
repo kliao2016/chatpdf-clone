@@ -1,5 +1,5 @@
 import ChatComponent from "@/components/ChatComponent";
-import PDFViewer from "@/components/PDFViewer";
+import ChatPDFViewer from "@/components/ChatPDFViewer";
 import getAllChats from "@/lib/db-queries";
 import { DrizzleChat } from "@/lib/db/schema";
 import { auth } from "@clerk/nextjs";
@@ -27,7 +27,7 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
             {/* PDF Viewer */}
             <div className="max-h-screen p-4 overflow-scroll flex-[5]">
                 <Suspense fallback={<div>Loading...</div>}>
-                    <PDFViewer fileKey={currentChat?.fileKey ?? ""} />
+                    <ChatPDFViewer fileKey={currentChat?.fileKey ?? ""} />
                 </Suspense>
             </div>
 
