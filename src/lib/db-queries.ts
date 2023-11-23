@@ -9,6 +9,9 @@ const getAllChats = unstable_cache(
         return db.select().from(chats).where(eq(chats.userId, userId));
     },
     ["all-chats"],
+    {
+        revalidate: 60, // 60 seconds
+    },
 );
 
 export default getAllChats;
