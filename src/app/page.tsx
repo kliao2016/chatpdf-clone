@@ -1,17 +1,17 @@
 import { unstable_noStore as noStore } from "next/cache";
 import FileUpload from "@/components/FileUpload";
-import SubscriptionButton from "@/components/SubscriptionButton";
 import { Button } from "@/components/ui/button";
-import { checkSubscription } from "@/lib/subscription";
 import { UserButton, auth } from "@clerk/nextjs";
 import { ArrowRight, LogInIcon } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
+import SubscriptionButtonSuspenseWrapper from "@/components/SubscriptionButtonSuspenseWrapper";
+import ButtonSkeleton from "@/components/skeletons/ButtonSkeleton";
 
-export default async function Home() {
+export default function Home() {
     noStore();
     const { userId }: { userId: string | null } = auth();
     const isAuth: boolean = !!userId;
-    const isPro: boolean = await checkSubscription();
 
     return (
         <div className="w-screen min-h-screen bg-gradient-to-r from-indigo-300 to-purple-400">
@@ -34,7 +34,9 @@ export default async function Home() {
                             </Link>
                         )}
                         <div className="ml-3">
-                            <SubscriptionButton isPro={isPro} />
+                            <Suspense fallback={<ButtonSkeleton />}>
+                                <SubscriptionButtonSuspenseWrapper />
+                            </Suspense>
                         </div>
                     </div>
 
