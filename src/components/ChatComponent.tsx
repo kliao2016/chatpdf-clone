@@ -1,8 +1,6 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { Message } from "ai";
 import ChatBox from "./ChatBox";
-import { Suspense } from "react";
-import MessageListSkeleton from "./skeletons/MessageListSkeleton";
 import MessageList from "./MessageList";
 import { db } from "@/lib/db";
 import { DrizzleMessage, messages } from "@/lib/db/schema";
@@ -33,9 +31,7 @@ const ChatComponent = async ({ chatFileKey, chatId }: Props) => {
             chatId={chatId}
             initialMessages={initialMessages ?? []}
         >
-            <Suspense fallback={<MessageListSkeleton />}>
-                <MessageList />
-            </Suspense>
+            <MessageList />
         </ChatBox>
     );
 };
