@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
-import { Stripe } from 'stripe';
+import Stripe from 'stripe';
 import { headers } from "next/headers";
 import { db } from '@/lib/db';
 import { userSubscriptions } from '@/lib/db/schema';
@@ -15,7 +15,7 @@ export async function POST(req: Request) {
         event = stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_SECRET!);
     } catch (error) {
         console.error(error);
-        return new NextResponse("Invalid webhook request", { status: 400 });
+        return NextResponse.json({ error: "Invalid webhook request" }, { status: 400 });
     }
 
     const session = event.data.object as Stripe.Checkout.Session;

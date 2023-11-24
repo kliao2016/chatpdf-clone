@@ -13,7 +13,7 @@ export async function GET() {
         const user = await currentUser();
 
         if (!userId) {
-            return new NextResponse("Unauthorized", { status: 401 });
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
         const subscription = await db
