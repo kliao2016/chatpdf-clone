@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getS3UploadPresignedUrl } from "@/lib/s3-server";
 
+export const dynamic = 'force-dynamic';
 export async function GET(req: Request, res: Response) {
     try {
         const { searchParams } = new URL(req.url);
