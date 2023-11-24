@@ -30,9 +30,7 @@ const ChatComponent = async ({ chatFileKey, chatId }: Props) => {
             chatFileKey={chatFileKey}
             chatId={chatId}
             initialMessages={initialMessages ?? []}
-        >
-            <MessageList />
-        </ChatBox>
+        />
     );
 };
 

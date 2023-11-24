@@ -2,11 +2,13 @@
 
 import { cn } from "@/lib/utils";
 import { Message } from "ai";
-import React, { useContext } from "react";
-import { MessagesContext } from "./contexts/MessagesProvider";
+import React from "react";
 
-const MessageList = () => {
-    const messages = useContext<Message[]>(MessagesContext);
+type Props = {
+    messages: Message[];
+};
+
+const MessageList = ({ messages }: Props) => {
     if (!messages) return <></>;
     return (
         <div className="flex flex-col gap-2 px-4 mb-4">
