@@ -2,8 +2,8 @@
 
 import { cn } from "@/lib/utils";
 import { Message } from "ai";
-import { Loader2 } from "lucide-react";
 import React from "react";
+import MessageListSkeleton from "./skeletons/MessageListSkeleton";
 
 type Props = {
     isLoading: boolean;
@@ -14,7 +14,7 @@ const MessageList = ({ isLoading, messages }: Props) => {
     if (isLoading) {
         return (
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                <Loader2 className="w-6 h-6 animate-spin" />
+                <MessageListSkeleton />
             </div>
         );
     }
