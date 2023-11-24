@@ -7,6 +7,7 @@ import { Button } from "./ui/button";
 import { Send } from "lucide-react";
 import { Message } from "ai";
 import MessageList from "./MessageList";
+import MessageListSkeleton from "./skeletons/MessageListSkeleton";
 
 type Props = {
     chatFileKey: string;
@@ -51,7 +52,9 @@ const ChatBox = ({
             </div>
 
             {/* Message List */}
-            <MessageList messages={messages} isLoading={isLoading} />
+            {isLoading && <MessageListSkeleton />}
+
+            <MessageList messages={messages} />
 
             <form
                 onSubmit={handleSubmit}

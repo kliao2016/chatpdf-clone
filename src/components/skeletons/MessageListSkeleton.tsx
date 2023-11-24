@@ -14,7 +14,7 @@ const MessageListSkeleton = () => {
                         "justify-start pr-10": index % 2 !== 0,
                     })}
                 >
-                    <Skeleton className="h-4 w-64" />
+                    <Skeleton className="h-4 w-32" />
                 </div>
             ))}
         </div>

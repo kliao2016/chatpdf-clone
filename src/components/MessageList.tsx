@@ -3,22 +3,12 @@
 import { cn } from "@/lib/utils";
 import { Message } from "ai";
 import React from "react";
-import MessageListSkeleton from "./skeletons/MessageListSkeleton";
 
 type Props = {
-    isLoading: boolean;
     messages: Message[];
 };
 
-const MessageList = ({ isLoading, messages }: Props) => {
-    if (isLoading) {
-        return (
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                <MessageListSkeleton />
-            </div>
-        );
-    }
-
+const MessageList = ({ messages }: Props) => {
     if (!messages) return <></>;
     return (
         <div className="flex flex-col gap-2 px-4 mb-4">
