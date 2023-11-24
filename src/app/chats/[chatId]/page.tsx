@@ -26,17 +26,19 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
         <>
             {/* PDF Viewer */}
             <div className="max-h-screen p-4 overflow-scroll flex-[5]">
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<div>Loading PDF...</div>}>
                     <ChatPDFViewer fileKey={currentChat?.fileKey ?? ""} />
                 </Suspense>
             </div>
 
             {/* Chat Box */}
             <div className="flex-[3] border-l-4 border-l-slate-200">
-                <ChatComponent
-                    chatFileKey={currentChat?.fileKey ?? ""}
-                    chatId={intChatId}
-                />
+                <Suspense fallback={<div>Loading Chats...</div>}>
+                    <ChatComponent
+                        chatFileKey={currentChat?.fileKey ?? ""}
+                        chatId={intChatId}
+                    />
+                </Suspense>
             </div>
         </>
     );

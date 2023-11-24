@@ -1,36 +1,42 @@
-"use client";
-
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { unstable_noStore as noStore } from "next/cache";
 import { Message } from "ai";
 import ChatBox from "./ChatBox";
+import { Suspense } from "react";
+import MessageListSkeleton from "./skeletons/MessageListSkeleton";
+import MessageList from "./MessageList";
+import { db } from "@/lib/db";
+import { DrizzleMessage, messages } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
 
 type Props = {
     chatFileKey: string;
     chatId: number;
 };
 
-const ChatComponent = ({ chatFileKey, chatId }: Props) => {
-    // Note that we could use pure fetch and make this a server component
-    const { data, isLoading } = useQuery({
-        queryKey: ["chat", chatId],
-        queryFn: async () => {
-            const response = await axios.get<Message[]>("/api/get-messages", {
-                params: {
-                    chatId: chatId,
-                },
-            });
-            return response.data;
-        },
-    });
+const ChatComponent = async ({ chatFileKey, chatId }: Props) => {
+    noStore();
+    const dbMessages: DrizzleMessage[] = await db
+        .select()
+        .from(messages)
+        .where(eq(messages.chatId, chatId));
+    const initialMessages: Message[] = dbMessages.map((message) => ({
+        id: message.id.toString(),
+        chatId: message.chatId.toString(),
+        createdAt: message.createdAt,
+        content: message.content,
+        role: message.role,
+    }));
 
     return (
         <ChatBox
             chatFileKey={chatFileKey}
             chatId={chatId}
-            initialMessages={data ?? []}
-            isLoading={isLoading}
-        />
+            initialMessages={initialMessages ?? []}
+        >
+            <Suspense fallback={<MessageListSkeleton />}>
+                <MessageList />
+            </Suspense>
+        </ChatBox>
     );
 };
 

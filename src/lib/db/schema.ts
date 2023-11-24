@@ -37,3 +37,4 @@ export const userSubscriptions = pgTable("user_subscriptions", {
 });
 
 export type DrizzleChat = typeof chats.$inferSelect;
+export type DrizzleMessage = typeof messages.$inferSelect;

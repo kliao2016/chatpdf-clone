@@ -6,22 +6,16 @@ import { useChat } from "ai/react";
 import { Button } from "./ui/button";
 import { Send } from "lucide-react";
 import { Message } from "ai";
-import MessageList from "./MessageList";
-import MessageListSkeleton from "./skeletons/MessageListSkeleton";
+import MessagesProvider from "./contexts/MessagesProvider";
 
 type Props = {
     chatFileKey: string;
     chatId: number;
     initialMessages: Message[];
-    isLoading: boolean;
+    children: React.ReactNode;
 };
 
-const ChatBox = ({
-    chatFileKey,
-    chatId,
-    initialMessages,
-    isLoading,
-}: Props) => {
+const ChatBox = ({ chatFileKey, chatId, initialMessages, children }: Props) => {
     const { input, handleInputChange, handleSubmit, messages } = useChat({
         api: "/api/chat",
         body: {
@@ -52,9 +46,7 @@ const ChatBox = ({
             </div>
 
             {/* Message List */}
-            {isLoading && <MessageListSkeleton />}
-
-            <MessageList messages={messages} />
+            <MessagesProvider messages={messages}>{children}</MessagesProvider>
 
             <form
                 onSubmit={handleSubmit}
