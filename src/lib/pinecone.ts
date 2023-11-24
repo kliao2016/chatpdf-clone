@@ -1,25 +1,11 @@
 import "server-only";
-import { Vector } from '@pinecone-database/pinecone/dist/pinecone-generated-ts-fetch';
 import { Pinecone, PineconeRecord, RecordMetadata } from "@pinecone-database/pinecone";
 import { downloadFromS3 } from "./s3-server";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { getEmbeddings } from './embeddings';
 import md5 from "md5";
-import { convertToAscii } from './utils';
 import { Document, RecursiveCharacterTextSplitter } from '@pinecone-database/doc-splitter';
-
-let pinecone: Pinecone | null = null;
-
-export const getPineconeClient = () => {
-    if (!pinecone) {
-        pinecone = new Pinecone({
-            environment: process.env.PINECONE_ENVIRONMENT!,
-            apiKey: process.env.PINECONE_API_KEY!
-        });
-    }
-
-    return pinecone;
-};
+import { pineconeClient } from "./pinecone-client";
 
 type PDFPage = {
     pageContent: string;
@@ -56,8 +42,7 @@ export async function loadS3IntoPinecone(fileKey: string) {
         );
 
         // 4. Upload vectors to pinecone
-        const client = await getPineconeClient();
-        const pineconeIndex = client.Index(
+        const pineconeIndex = pineconeClient.Index(
             process.env.PINECONE_INDEX!
         );
         // We can ideally use namespace or metadata filtering if unavailable

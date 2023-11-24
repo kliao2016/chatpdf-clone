@@ -1,27 +1,14 @@
 import "server-only";
-import { Pinecone, RecordValues } from "@pinecone-database/pinecone";
+import { RecordValues } from "@pinecone-database/pinecone";
 import { getEmbeddings } from "./embeddings";
 import { convertToAscii } from "./utils";
-
-let pinecone: Pinecone | null = null;
-
-export const getPineconeClient = () => {
-    if (!pinecone) {
-        pinecone = new Pinecone({
-            environment: process.env.PINECONE_ENVIRONMENT!,
-            apiKey: process.env.PINECONE_API_KEY!
-        });
-    }
-
-    return pinecone;
-};
+import { pineconeClient } from "./pinecone-client";
 
 export async function getMatchesFromEmbeddings(
     embeddings: RecordValues,
     fileKey: string
 ) {
-    const client = await getPineconeClient();
-    const pineconeIndex = client.Index(
+    const pineconeIndex = pineconeClient.Index(
         process.env.PINECONE_INDEX!
     );
 
