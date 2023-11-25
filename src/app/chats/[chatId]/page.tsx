@@ -7,8 +7,13 @@ import { getSignedUrlPromise } from "@/lib/s3-server";
 import { auth } from "@clerk/nextjs";
 import { Message } from "ai";
 import { eq } from "drizzle-orm";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import React from "react";
+
+export const metadata: Metadata = {
+    title: "Chats",
+};
 
 type Props = {
     params: {
