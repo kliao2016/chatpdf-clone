@@ -15,14 +15,16 @@ export async function getEmbeddings(text: string) {
             input: [text.replace(/\n/g, " ")],
         });
         const result = await response.json();
-        console.log(result);
-        if (result.data && result.data[0] && result.data[0].embedding) {
+        if (result?.data &&
+            result.data.length > 0 &&
+            result.data[0]?.embedding
+        ) {
             return result.data[0].embedding as RecordValues;
         } else {
             return [];
         }
     } catch (error) {
-        console.log("Error calling OpenAI embeddings api", error);
+        console.error("Error calling OpenAI embeddings api", error);
         throw error;
     }
 }

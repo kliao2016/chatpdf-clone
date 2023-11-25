@@ -1,11 +1,12 @@
 import "server-only";
-import { Pinecone, PineconeRecord, RecordMetadata } from "@pinecone-database/pinecone";
+import { PineconeRecord, RecordMetadata } from "@pinecone-database/pinecone";
 import { downloadFromS3 } from "./s3-server";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { getEmbeddings } from './embeddings';
 import md5 from "md5";
 import { Document, RecursiveCharacterTextSplitter } from '@pinecone-database/doc-splitter';
 import { pineconeClient } from "./pinecone-client";
+import { fulfilledAndDefinedPromises } from "./utils";
 
 type PDFPage = {
     pageContent: string;
@@ -21,20 +22,29 @@ type PDFPage = {
  */
 export async function loadS3IntoPinecone(fileKey: string) {
     // 1. obtain the pdf from s3 and read from it
-    const fileName = await downloadFromS3(fileKey);
+    const fileName = await downloadFromS3(fileKey).catch((error) => {
+        throw error;
+    });
     if (fileName) {
         console.log(`Loaded ${fileName} from S3`);
         const loader = new PDFLoader(fileName);
-        const pages = (await loader.load()) as PDFPage[];
+
+        let pages: PDFPage[] = [];
+        try {
+            // TODO: This cast can be fragile
+            pages = await loader.load() as PDFPage[];
+        } catch (error) {
+            throw error;
+        }
 
         // 2. Split and segment pdf into smaller parts for better vectorization
-        const documents = await Promise.all(
-            pages.map(prepareDocument)
+        const splitDocuments = await fulfilledAndDefinedPromises<Document[]>(
+            pages.map(splitPage)
         );
 
         // 3. Vectorize and embed invidual documents
-        const vectors: PineconeRecord<RecordMetadata>[] = await Promise.all(
-            documents
+        const vectors = await fulfilledAndDefinedPromises<PineconeRecord<RecordMetadata>>(
+            splitDocuments
                 .flat()
                 .map(async (doc: Document) => {
                     return embedDocument(doc, fileKey);
@@ -65,7 +75,7 @@ export const truncateStringByBytes = (string: string, bytes: number) => {
     );
 }
 
-async function prepareDocument(page: PDFPage) {
+async function splitPage(page: PDFPage) {
     let { pageContent, metadata } = page;
 
     // Replace newlines with empty string
@@ -80,11 +90,13 @@ async function prepareDocument(page: PDFPage) {
         new Document({
             pageContent,
             metadata: {
-                pageNumber: metadata.loc.pageNumber,
+                pageNumber: metadata?.loc?.pageNumber,
                 text: truncateStringByBytes(pageContent, 36000)
             }
         })
-    ]);
+    ]).catch((error) => {
+        throw error;
+    });
 
     return docs;
 }

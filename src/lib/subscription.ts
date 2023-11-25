@@ -5,7 +5,7 @@ import { eq } from 'drizzle-orm';
 import { userSubscriptions } from './db/schema';
 
 export const checkSubscription = async () => {
-    const { userId } = await auth();
+    const { userId } = auth();
     if (!userId) {
         return false;
     }
@@ -13,7 +13,11 @@ export const checkSubscription = async () => {
     const subscriptions = await db
         .select()
         .from(userSubscriptions)
-        .where(eq(userSubscriptions.userId, userId));
+        .where(eq(userSubscriptions.userId, userId))
+        .catch((error) => {
+            // TODO: Throw error for UI
+            return [];
+        });
 
     if (!subscriptions[0]) {
         return false;
