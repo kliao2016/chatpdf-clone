@@ -1,7 +1,9 @@
 import { db } from "@/lib/db";
+import { ALL_CHATS_KEY } from "@/lib/db-queries";
 import { chats } from "@/lib/db/schema";
 import { loadS3IntoPinecone } from "@/lib/pinecone";
 import { auth } from "@clerk/nextjs";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
 // /api/create-chat
@@ -32,6 +34,8 @@ export async function POST(req: Request, res: Response) {
                 }
             );
 
+        revalidateTag(ALL_CHATS_KEY);
+        revalidatePath("/chats/");
         return NextResponse.json(
             {
                 chatId: chatId[0].insertedId,
