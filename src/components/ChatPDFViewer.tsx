@@ -1,13 +1,11 @@
-import { getSignedUrlPromise } from "@/lib/s3-server";
 import React from "react";
 import PDFViewer from "./ui/PDFViewer";
 
 type Props = {
-    fileKey: string;
+    presignedDownloadUrl: string;
 };
 
-const ChatPDFViewer = async ({ fileKey }: Props) => {
-    const presignedDownloadUrl = await getSignedUrlPromise(fileKey);
+const ChatPDFViewer = async ({ presignedDownloadUrl }: Props) => {
     return (
         <div className="h-full w-full">
             <PDFViewer presignedDownloadUrl={presignedDownloadUrl} />
