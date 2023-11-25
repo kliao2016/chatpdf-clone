@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import { useChat } from "ai/react";
 import { Button } from "./ui/button";
@@ -15,6 +15,8 @@ type Props = {
 };
 
 const ChatBox = ({ chatFileKey, chatId, initialMessages }: Props) => {
+    const [waitingForStreamedResponse, setWaitingForStreamedResponse] =
+        useState(false);
     const { input, handleInputChange, handleSubmit, messages } = useChat({
         api: "/api/chat",
         body: {
@@ -22,7 +24,19 @@ const ChatBox = ({ chatFileKey, chatId, initialMessages }: Props) => {
             chatId: chatId,
         },
         initialMessages: initialMessages,
+        onResponse: (_) => {
+            setWaitingForStreamedResponse(false);
+        },
+        onError: (_) => {
+            setWaitingForStreamedResponse(false);
+        },
     });
+
+    const handleUserSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setWaitingForStreamedResponse(true);
+        handleSubmit(e);
+    };
 
     useEffect(() => {
         const messageContainer = document.getElementById("message-container");
@@ -45,10 +59,13 @@ const ChatBox = ({ chatFileKey, chatId, initialMessages }: Props) => {
             </div>
 
             {/* Message List */}
-            <MessageList messages={messages} />
+            <MessageList
+                messages={messages}
+                isLoading={waitingForStreamedResponse}
+            />
 
             <form
-                onSubmit={handleSubmit}
+                onSubmit={handleUserSubmit}
                 className="sticky bottom-0 inset-x-0 px-2 py-4 bg-white"
             >
                 <div className="flex">

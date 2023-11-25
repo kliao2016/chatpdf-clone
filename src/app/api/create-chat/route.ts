@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { ALL_CHATS_KEY } from "@/lib/db-queries";
+import { ALL_CHATS_QUERY_KEY } from "@/lib/db-queries";
 import { chats } from "@/lib/db/schema";
 import { loadS3IntoPinecone } from "@/lib/pinecone";
 import { auth } from "@clerk/nextjs";
@@ -34,7 +34,7 @@ export async function POST(req: Request, res: Response) {
                 }
             );
 
-        revalidateTag(ALL_CHATS_KEY);
+        revalidateTag(ALL_CHATS_QUERY_KEY);
         revalidatePath("/chats/");
         return NextResponse.json(
             {
