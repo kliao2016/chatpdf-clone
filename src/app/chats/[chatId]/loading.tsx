@@ -1,6 +1,11 @@
 import MessageListSkeleton from "@/components/skeletons/MessageListSkeleton";
 import PDFSkeleton from "@/components/skeletons/PDFSkeleton";
+import { Metadata } from "next";
 import React from "react";
+
+export const metadata: Metadata = {
+    title: "Chats",
+};
 
 const ChatPageLoadingSkeleton = () => {
     return (

@@ -8,6 +8,11 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import ButtonSkeleton from "@/components/skeletons/ButtonSkeleton";
 import SubscriptionButtonSuspenseWrapper from "@/components/SubscriptionButtonSuspenseWrapper";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Chats",
+};
 
 type Props = {
     children: React.ReactNode;
