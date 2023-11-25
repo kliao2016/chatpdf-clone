@@ -1,6 +1,6 @@
 import React from "react";
-import { Button } from "../ui/button";
-import { Skeleton } from "../ui/skeleton";
+import { Button } from "../button";
+import { Skeleton } from "./skeleton";
 
 const ButtonSkeleton = () => {
     return (

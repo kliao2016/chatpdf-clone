@@ -1,5 +1,5 @@
 import React from "react";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "./skeleton";
 
 const ChatsSkeleton = () => {
     const mockChats = [...new Array(10)];

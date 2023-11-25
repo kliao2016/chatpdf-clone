@@ -6,7 +6,7 @@ import { ArrowRight, LogInIcon } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import SubscriptionButtonSuspenseWrapper from "@/components/SubscriptionButtonSuspenseWrapper";
-import ButtonSkeleton from "@/components/skeletons/ButtonSkeleton";
+import ButtonSkeleton from "@/components/ui/skeletons/ButtonSkeleton";
 
 export default function Home() {
     noStore();

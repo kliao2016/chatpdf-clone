@@ -1,5 +1,5 @@
-import MessageListSkeleton from "@/components/skeletons/MessageListSkeleton";
-import PDFSkeleton from "@/components/skeletons/PDFSkeleton";
+import MessageListSkeleton from "@/components/ui/skeletons/MessageListSkeleton";
+import PDFSkeleton from "@/components/ui/skeletons/PDFSkeleton";
 import React from "react";
 
 const ChatPageLoadingSkeleton = () => {
