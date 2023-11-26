@@ -25,14 +25,14 @@ export default function Home() {
                     </div>
 
                     <div className="flex mt-2">
-                        {isAuth && (
+                        {isAuth ? (
                             <Link href={`/chats/`}>
                                 <Button>
                                     Go to Chats
                                     <ArrowRight className="ml-2 w-5 h-5"></ArrowRight>
                                 </Button>
                             </Link>
-                        )}
+                        ) : null}
                         <div className="ml-3">
                             <Suspense fallback={<ButtonSkeleton />}>
                                 <SubscriptionButtonSuspenseWrapper />

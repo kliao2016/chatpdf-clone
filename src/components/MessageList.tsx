@@ -37,7 +37,7 @@ const MessageList = ({ messages, isLoading }: Props) => {
                 );
             })}
 
-            {isLoading && (
+            {isLoading ? (
                 <div className="flex justify-start pr-10">
                     <div className="flex space-x-2 justify-center items-center rounded-lg px-3 textsm pt-3 pb-2 shadow-md ring-1 ring-gray-900/10">
                         <div className="bg-purple-400 w-2 h-2 rounded-full animate-bounce animation-delay-100" />
@@ -45,7 +45,7 @@ const MessageList = ({ messages, isLoading }: Props) => {
                         <div className="bg-purple-400 w-2 h-2 rounded-full animate-bounce animation-delay-300" />
                     </div>
                 </div>
-            )}
+            ) : null}
         </div>
     );
 };
