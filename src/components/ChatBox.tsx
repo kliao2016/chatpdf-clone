@@ -45,7 +45,7 @@ const ChatBox = ({ chatFileKey, chatId, initialMessages }: Props) => {
                 behavior: "smooth",
             });
         }
-    }, [messages]);
+    }, [messages.length]);
 
     return (
         <div

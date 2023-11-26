@@ -8,7 +8,10 @@ export const ALL_CHATS_QUERY_KEY = "all-chats";
 
 const getAllChats = unstable_cache(
     async (userId: string) => {
-        return db.select().from(chats).where(eq(chats.userId, userId));
+        return db
+            .select()
+            .from(chats)
+            .where(eq(chats.userId, userId));
     },
     [ALL_CHATS_QUERY_KEY],
     {
