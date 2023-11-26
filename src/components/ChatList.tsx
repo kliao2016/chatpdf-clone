@@ -4,23 +4,31 @@ import { cn } from "@/lib/utils";
 import { MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 
 type Props = {
     chats: DrizzleChat[];
 };
 
 const ChatList = ({ chats }: Props) => {
-    let activeChatId: string = "0";
+    const [activeChatId, setActiveChatId] = useState<string | null>(null);
     const params = useParams();
-    if (params.chatId !== undefined && typeof params.chatId === "string") {
-        activeChatId = params.chatId;
+    if (
+        params.chatId !== undefined &&
+        typeof params.chatId === "string" &&
+        params.chatId !== activeChatId
+    ) {
+        setActiveChatId(params.chatId);
     }
 
     return (
         <div className="f flex-col gap-2 mt-4">
             {chats.map((chat) => (
-                <Link key={chat.id} href={`/chats/${chat.id}`}>
+                <Link
+                    key={chat.id}
+                    href={`/chats/${chat.id}`}
+                    onClick={() => setActiveChatId(chat.id.toString())}
+                >
                     <div
                         className={cn(
                             "rounded-lg p-3 text-slate-300 flex items-center",
