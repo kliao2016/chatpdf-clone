@@ -33,7 +33,6 @@ const ChatBox = ({ chatFileKey, chatId, initialMessages }: Props) => {
     });
 
     const handleUserSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
         setWaitingForStreamedResponse(true);
         handleSubmit(e);
     };
