@@ -53,6 +53,8 @@ function FileUpload() {
                         fileName: file.name,
                     },
                 };
+
+                // TODO: Potentially replace with server action
                 const signedUrlResponse = await axios.get(
                     "/api/s3-signed-url",
                     request,
