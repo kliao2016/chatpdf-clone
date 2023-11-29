@@ -12,7 +12,7 @@ type PDFPage = {
     pageContent: string;
     metadata: {
         loc: { pageNumber: number }
-    }
+    };
 }
 
 /**
@@ -31,8 +31,11 @@ export async function loadS3IntoPinecone(fileKey: string) {
 
         let pages: PDFPage[] = [];
         try {
-            // TODO: This cast can be fragile
-            pages = await loader.load() as PDFPage[];
+            const documents = await loader.load();
+            pages = documents
+                .filter((doc) => {
+                    doc.metadata.loc !== undefined && doc.metadata.loc satisfies { pageNumber: number }
+                }) as PDFPage[];
         } catch (error) {
             throw error;
         }
