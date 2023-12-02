@@ -5,7 +5,6 @@ import { MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
-import { z } from "zod";
 
 type Props = {
     chats: DrizzleChat[];
