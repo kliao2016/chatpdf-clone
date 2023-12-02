@@ -15,47 +15,51 @@ export default function Home() {
 
     return (
         <div className="w-screen min-h-screen bg-gradient-to-r from-indigo-300 to-purple-400">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                <div className="flex flex-col items-center text-center">
-                    <div className="flex items-center">
-                        <h1 className="mr-3 text-5xl font-bold">
-                            Chat with any PDF
-                        </h1>
-                        <UserButton afterSignOutUrl="/"></UserButton>
-                    </div>
-
-                    <div className="flex mt-2">
-                        {isAuth ? (
-                            <Link href={`/chats/`}>
-                                <Button>
-                                    Go to Chats
-                                    <ArrowRight className="ml-2 w-5 h-5"></ArrowRight>
-                                </Button>
-                            </Link>
-                        ) : null}
-                        <div className="ml-3">
-                            <Suspense fallback={<ButtonSkeleton />}>
-                                <SubscriptionButtonSuspenseWrapper />
-                            </Suspense>
+            <div className="mx-auto w-full pt-6 px-6 2xl:w-1/2 2xl:px-0">
+                <div className="w-full flex justify-end">
+                    <UserButton afterSignOutUrl="/"></UserButton>
+                </div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                    <div className="flex flex-col items-center text-center">
+                        <div className="flex items-center">
+                            <h1 className="mr-3 text-5xl font-bold">
+                                Chat with any PDF
+                            </h1>
                         </div>
-                    </div>
 
-                    <p className="max-w-xl mt-1 text-lg text-slate-600">
-                        Instantly answer questions and understand research with
-                        AI
-                    </p>
+                        <div className="flex mt-2">
+                            {isAuth ? (
+                                <Link href={`/chats/`}>
+                                    <Button>
+                                        Go to Chats
+                                        <ArrowRight className="ml-2 w-5 h-5"></ArrowRight>
+                                    </Button>
+                                </Link>
+                            ) : null}
+                            <div className="ml-3">
+                                <Suspense fallback={<ButtonSkeleton />}>
+                                    <SubscriptionButtonSuspenseWrapper />
+                                </Suspense>
+                            </div>
+                        </div>
 
-                    <div className="w-full mt-4">
-                        {isAuth ? (
-                            <FileUpload />
-                        ) : (
-                            <Link href={"/sign-in"}>
-                                <Button>
-                                    Login to get Started!
-                                    <LogInIcon className="2-4 h-4 ml-2" />
-                                </Button>
-                            </Link>
-                        )}
+                        <p className="max-w-xl mt-1 text-lg text-slate-600">
+                            Instantly answer questions and understand research
+                            with AI
+                        </p>
+
+                        <div className="w-full mt-4">
+                            {isAuth ? (
+                                <FileUpload />
+                            ) : (
+                                <Link href={"/sign-in"}>
+                                    <Button>
+                                        Login to get Started!
+                                        <LogInIcon className="2-4 h-4 ml-2" />
+                                    </Button>
+                                </Link>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
