@@ -14,15 +14,15 @@ export default function Home() {
     const isAuth: boolean = !!userId;
 
     return (
-        <div className="w-screen min-h-screen bg-gradient-to-r from-indigo-300 to-purple-400">
-            <div className="mx-auto w-full pt-6 px-6 2xl:w-1/2 2xl:px-0">
+        <div className="w-screen h-screen overflow-hidden bg-gradient-to-r from-indigo-300 to-purple-400">
+            <div className="mx-auto w-full h-full pt-6 px-6 2xl:w-1/2 2xl:px-0">
                 <div className="w-full flex justify-end">
                     <UserButton afterSignOutUrl="/"></UserButton>
                 </div>
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                     <div className="flex flex-col items-center text-center">
                         <div className="flex items-center">
-                            <h1 className="mr-3 text-5xl font-bold">
+                            <h1 className="text-5xl font-bold">
                                 Chat with any PDF
                             </h1>
                         </div>
