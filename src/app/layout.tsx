@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import Providers from "@/components/Providers";
 import { Toaster } from "react-hot-toast";
+import React from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,15 +18,17 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <ClerkProvider>
-            <Providers>
-                <html lang="en">
-                    <body className={inter.className}>
-                        {children}
-                        <Toaster />
-                    </body>
-                </html>
-            </Providers>
-        </ClerkProvider>
+        <React.StrictMode>
+            <ClerkProvider>
+                <Providers>
+                    <html lang="en">
+                        <body className={inter.className}>
+                            {children}
+                            <Toaster />
+                        </body>
+                    </html>
+                </Providers>
+            </ClerkProvider>
+        </React.StrictMode>
     );
 }
