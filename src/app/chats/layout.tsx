@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import ChatsSkeleton from "@/components/ui/skeletons/ChatsSkeleton";
-import ChatListSuspenseWrapper from "@/components/ChatListSuspenseWrapper";
+import ChatListSuspenseWrapper from "@/app/chats/ChatListSuspenseWrapper";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";

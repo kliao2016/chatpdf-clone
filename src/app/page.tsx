@@ -1,5 +1,5 @@
 import { unstable_noStore as noStore } from "next/cache";
-import FileUpload from "@/components/FileUpload";
+import FileUpload from "@/app/FileUpload";
 import { Button } from "@/components/ui/button";
 import { UserButton, auth } from "@clerk/nextjs";
 import { ArrowRight, LogInIcon } from "lucide-react";
