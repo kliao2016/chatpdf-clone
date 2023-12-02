@@ -7,13 +7,18 @@ import md5 from "md5";
 import { Document, RecursiveCharacterTextSplitter } from '@pinecone-database/doc-splitter';
 import { pineconeClient } from "./pinecone-client";
 import { fulfilledAndDefinedPromises } from "./utils";
+import { z } from "zod";
 
-type PDFPage = {
-    pageContent: string;
-    metadata: {
-        loc: { pageNumber: number }
-    };
-}
+const pdfPageSchema = z.object({
+    pageContent: z.string(),
+    metadata: z.object({
+        loc: z.object({
+            pageNumber: z.string(),
+        }),
+    }),
+});
+
+type PDFPage = z.infer<typeof pdfPageSchema>;
 
 /**
  * Downloads a file from S3 and splits and vectorizes it before uploading to PineconeDB. This function essentially performs Retrieval Augmented Generation.
@@ -34,7 +39,8 @@ export async function loadS3IntoPinecone(fileKey: string) {
             const documents = await loader.load();
             pages = documents
                 .filter((doc) => {
-                    doc.metadata.loc !== undefined && doc.metadata.loc satisfies { pageNumber: number }
+                    const validPDFPage = pdfPageSchema.safeParse(doc);
+                    return validPDFPage.success
                 }) as PDFPage[];
         } catch (error) {
             throw error;

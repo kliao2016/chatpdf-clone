@@ -3,6 +3,14 @@ import { RecordMetadata, RecordValues, ScoredPineconeRecord } from "@pinecone-da
 import { getEmbeddings } from "./embeddings";
 import { convertToAscii } from "./utils";
 import { pineconeClient } from "./pinecone-client";
+import { z } from "zod";
+
+const metadataSchema = z.object({
+    text: z.string(),
+    pageNumber: z.number(),
+});
+
+type Metadata = z.infer<typeof metadataSchema>;
 
 export async function getMatchesFromEmbeddings(
     embeddings: RecordValues,
@@ -48,12 +56,12 @@ export async function getContext(query: string, fileKey: string) {
         return match.score && match.score > 0.7;
     });
 
-    type Metadata = {
-        text: string;
-        pageNumber: number;
-    }
+    const validRecords = qualifyingRecords.filter((record) => {
+        const validMetadata = metadataSchema.safeParse(record.metadata);
+        return validMetadata.success;
+    });
 
-    let docs = qualifyingRecords.map((record) => {
+    const docs = validRecords.map((record) => {
         const metadata = record.metadata as Metadata;
         return metadata.text;
     });
