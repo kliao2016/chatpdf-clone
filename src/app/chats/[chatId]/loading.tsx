@@ -6,7 +6,7 @@ const ChatPageLoadingSkeleton = () => {
     return (
         <>
             {/* PDF Viewer Skeleton */}
-            <div className="max-h-screen p-4 overflow-scroll flex-[5]">
+            <div className="flex-[5] max-h-screen p-4 overflow-scroll">
                 <PDFSkeleton />
             </div>
 
