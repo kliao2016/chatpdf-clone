@@ -13,7 +13,7 @@ const pdfPageSchema = z.object({
     pageContent: z.string(),
     metadata: z.object({
         loc: z.object({
-            pageNumber: z.string(),
+            pageNumber: z.number().nonnegative(),
         }),
     }),
 });
@@ -71,7 +71,11 @@ export async function loadS3IntoPinecone(fileKey: string) {
 
         console.log("Inserting vectors into pinecone...");
 
-        pineconeIndex.upsert(vectors);
+        try {
+            pineconeIndex.upsert(vectors);
+        } catch (error) {
+            throw error;
+        }
     } else {
         throw new Error("Could not download file from S3!");
     }
