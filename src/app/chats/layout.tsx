@@ -7,7 +7,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import ButtonSkeleton from "@/components/ui/skeletons/ButtonSkeleton";
-import SubscriptionButtonSuspenseWrapper from "@/components/SubscriptionButtonSuspenseWrapper";
+import SubscriptionButtonSuspenseWrapper from "@/components/ui/SubscriptionButtonSuspenseWrapper";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

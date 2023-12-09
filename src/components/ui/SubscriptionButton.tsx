@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
 import React, { useState } from "react";
-import { Button } from "./ui/button";
+import { Button } from "./button";
 
 type Props = {
     isPro: boolean;

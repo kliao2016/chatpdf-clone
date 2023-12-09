@@ -5,7 +5,7 @@ import { UserButton, auth } from "@clerk/nextjs";
 import { ArrowRight, LogInIcon } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
-import SubscriptionButtonSuspenseWrapper from "@/components/SubscriptionButtonSuspenseWrapper";
+import SubscriptionButtonSuspenseWrapper from "@/components/ui/SubscriptionButtonSuspenseWrapper";
 import ButtonSkeleton from "@/components/ui/skeletons/ButtonSkeleton";
 
 export default function Home() {
