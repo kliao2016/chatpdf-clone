@@ -1,5 +1,5 @@
 import React from "react";
-import PDFViewer from "../../../components/ui/PDFViewer";
+import PDFViewer from "./PDFViewer";
 
 type Props = {
     presignedDownloadUrl: string;

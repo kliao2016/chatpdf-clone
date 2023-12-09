@@ -1,5 +1,5 @@
-import ChatBox from "@/app/chats/[chatId]/ChatBox";
-import ChatPDFViewer from "@/app/chats/[chatId]/ChatPDFViewer";
+import ChatBox from "@/components/ui/chat/ChatBox";
+import ChatPDFViewer from "@/components/ui/chat/ChatPDFViewer";
 import { db } from "@/lib/db";
 import getAllChats from "@/lib/db-queries";
 import { DrizzleChat, DrizzleMessage, messages } from "@/lib/db/schema";
