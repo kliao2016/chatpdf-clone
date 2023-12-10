@@ -1,5 +1,5 @@
 import ChatBox from "@/components/ui/chat/ChatBox";
-import ChatPDFViewer from "@/components/ui/chat/ChatPDFViewer";
+import PDFViewer from "@/components/ui/chat/PDFViewer";
 import { db } from "@/lib/db";
 import getAllChats from "@/lib/db-queries";
 import { DrizzleChat, DrizzleMessage, messages } from "@/lib/db/schema";
@@ -38,6 +38,7 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
         .from(messages)
         .where(eq(messages.chatId, intChatId));
 
+    // TODO: Better error handling to make sure a reject doesn't fail the other call
     const [presignedDownloadUrl, dbMessages] = await Promise.all([
         presignedDownloadUrlPromise,
         dbMessagesPromise,
@@ -52,12 +53,14 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
     }));
 
     return (
+        // TODO: Could stream in both components
         <>
             {/* PDF Viewer */}
             <div className="flex-[5] max-h-screen p-4 overflow-scroll">
-                <ChatPDFViewer presignedDownloadUrl={presignedDownloadUrl} />
+                <div className="h-full w-full">
+                    <PDFViewer presignedDownloadUrl={presignedDownloadUrl} />
+                </div>
             </div>
-
             {/* Chat Box */}
             <div className="flex-[3] border-l-4 border-l-slate-200">
                 <ChatBox
