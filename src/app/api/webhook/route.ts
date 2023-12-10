@@ -40,6 +40,7 @@ export async function POST(req: Request) {
     if (event.type === "invoice.payment_succeeded") {
         const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
 
+        // TODO: Verify Postgres is doing transactions under the hood
         await db
             .update(userSubscriptions)
             .set({

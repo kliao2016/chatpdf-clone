@@ -32,6 +32,7 @@ export async function GET() {
             return NextResponse.json({ url: stripeBillingSession.url });
         } else {
             // User's first time subscribing
+            // TODO: Add idempotency if needed
             const stripeCheckoutSession = await stripe.checkout.sessions.create({
                 success_url: return_url,
                 cancel_url: return_url,
